@@ -4,21 +4,23 @@ OvenScreen oven;
 PImage phone;
 
 boolean ovenPowerStatus = false;
+float timerTime;
 
 // These controls will have animated icons
 GButton powerButton;
+GKnob timerKnob;
 GLabel label;
 
 public void settings() {
-  size(550, 790);
+  size(790, 550);
 }
 
 void setup() { 
   oven = new OvenScreen();
   phone = loadImage("phone.png");
   oven.ovenBG = loadImage("oven.jpg");
-  powerButton = new GButton(this, 340, 180, 50, 50, "OFF");
-
+  powerButton = new GButton(this, 620, 220, 50, 50, "OFF");
+  timerKnob = new GKnob(this, 115, 140, 30, 30, 01f); 
 }
 
 void draw() {
@@ -28,11 +30,19 @@ void draw() {
   noStroke();
   if(ovenPowerStatus) {
     fill(color(255,0,0));
-    ellipse(365,160,20,20);  
+    ellipse(640,200,20,20);  
   } else {
     fill(255);
-    ellipse(365,160,20,20); 
+    ellipse(640,200,20,20); 
   }
+  rectMode(CENTER);
+  fill(255);
+  
+  rect(width/2,height/2 - 50,200,80);
+  rect(width/2,height/2 +70,300,100);
+  
+  text(timerTime,width/2,height/2 + 70); //Timer text
+
   
 }
 
@@ -47,6 +57,15 @@ public void handleButtonEvents(GButton source, GEvent event) {
         powerButton.setText("ON");
         ovenPowerStatus = true;
     }
+    
+}
+
+public void handleKnobEvents(GValueControl knob, GEvent event) { 
+
+  if (timerKnob == knob)
+    timerTime = 100 * float(knob.getValueS());
+    timerTime = floor(timerTime);
+    println(timerTime);
     
 }
 

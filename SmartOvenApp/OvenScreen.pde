@@ -1,6 +1,6 @@
 class OvenScreen extends PApplet {
   PImage ovenBG;
-  
+  String time;
   
   OvenScreen() {
     super();
@@ -18,13 +18,11 @@ class OvenScreen extends PApplet {
   }
 
   void setup() {
-   
-    
+   time = " ";
   }
 
   void draw() {
-
-
+    text(time,200,200);
   }
 
   void mousePressed() {

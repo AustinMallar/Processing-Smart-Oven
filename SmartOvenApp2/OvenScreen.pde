@@ -97,7 +97,4 @@ class OvenScreen extends PApplet {
     
   }
   
-  void mousePressed() {
-    println("mousePressed in secondary window");
-  }
 }

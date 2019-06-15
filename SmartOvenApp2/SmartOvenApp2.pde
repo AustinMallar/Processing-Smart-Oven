@@ -16,12 +16,10 @@ boolean farenheit = true;
 // These controls will have animated icons
 GButton powerButton;
 GImageButton lockButton, changeUnitsButton;
-GKnob timerKnob;
-GCustomSlider tempSlider;
+GKnob timerKnob, tempKnob;
 
 public void settings() {
  size(790, 550);
-
 }
 
 void setup() {
@@ -31,62 +29,64 @@ void setup() {
  phone = loadImage("phone.png");
  oven.ovenBG = loadImage("oven.jpg");
  oven.background(oven.ovenBG);
- powerButton = new GButton(this, 620, 220, 50, 50, "OFF");
- timerKnob = new GKnob(this, 115, 143, 30, 30, 01f);
+ 
+ powerButton = new GButton(this, 620, 180, 50, 50, "OFF");
+ 
+ timerKnob = new GKnob(this, 155, 310, 50, 50, 01f);
  timerKnob.setLimits(0, 240);
+
+ tempKnob = new GKnob(this,295,310,50,50,01f);
+ tempKnob.setLimits(150,560);
 
  files = new String[] {
   "lockButton.png"
  };
- lockButton = new GImageButton(this, 155, 140, files, "lockButton.png");
+ 
+ lockButton = new GImageButton(this, 570, 340, files, "lockButton.png");
 
  files = new String[] {
   "unitChangeButton.png"
  };
- changeUnitsButton = new GImageButton(this, 200, 140, files, "unitChangeButton.png");
-
- tempSlider = new GCustomSlider(this, 115, 180, 140, 50, null);
-
-
- tempSlider.setShowDecor(false, true, true, true);
- tempSlider.setNbrTicks(5);
- tempSlider.setLimits(350, 150, 560);
-
+ 
+ changeUnitsButton = new GImageButton(this, 570, 290, files, "unitChangeButton.png");
 
 }
 
 void draw() {
- temp = tempSlider.getValueI();
+ temp = tempKnob.getValueI();
  background(phone);
  fill(0);
  noStroke();
  if (ovenPowerStatus) {
+   // Power on light
   fill(color(255, 0, 0));
-  ellipse(640, 200, 20, 20);
+  ellipse(645, 160, 20, 20);
  } else {
+  // Power off light 
   fill(255);
-  ellipse(640, 200, 20, 20);
+  ellipse(645, 160, 20, 20);
  }
  rectMode(CENTER);
  fill(255);
 
- rect(width / 2, height / 2 - 50, 200, 80);
- rect(width / 2, height / 2 + 70, 300, 100);
+ rect(175, 250, 120, 50);
+ rect(315, 250, 120, 50);
 
  if (ovenPowerStatus) {
   fill(0);
-  textSize(60);
+  textSize(30);
   textAlign(CENTER);
-  text(int(timerTime), width / 2, height / 2 + 90); //Timer text
-  textSize(48);
-  text(temp, width / 2, height / 2 - 30); //Temp text
-
+  text(int(timerTime), 160, 265); //Timer text
+  text(temp, 305, 265); //Temp text
+  
+  textSize(24);
   textAlign(LEFT);
-  textSize(16);
-  text(degreeSymbol, width / 2 + 40, height / 2 - 65);
-  textSize(48);
-  text(units, width / 2 + 50, height / 2 - 30);
-  text("Min", width / 2 + 50, height / 2 + 90);
+  text("Min", 190, 265);
+  
+  textSize(10);
+  text(degreeSymbol, 335, 245);
+  textSize(24);
+  text(units, 340, 265);  
   
   oven.temp=temp; // Send temperature to oven.
   oven.timerTime = timerTime; // Send timer to oven.
@@ -135,17 +135,20 @@ public void handleKnobEvents(GValueControl knob, GEvent event) {
 void mousePressed() {
 
  // Handle units change button press
- if (mouseX >= 200 && mouseX <= 232) {
-  if (mouseY >= 140 && mouseY <= 172) {
+ if (mouseX >= 570 && mouseX <= 602) {
+  if (mouseY >= 290 && mouseY <= 322) {
    if (farenheit) {
-    temp = (temp - 32) * 5 / 9;
-    tempSlider.setLimits(temp, 90, 260);
+    temp = floor((temp - 32) * 5 / 9);
+    tempKnob.setLimits(temp, 90, 260);
+    tempKnob.setValue(temp);
     farenheit = false;
     oven.farenheit = false;
     units = "C";
    } else {
-    temp = temp * 9 / 5 + 32;
-    tempSlider.setLimits(temp, 150, 560);
+    temp = ceil(temp * 9 / 5 + 32);
+    tempKnob.setLimits(150,560);
+    tempKnob.setValue(temp);
+
     farenheit = true;
     oven.farenheit = true;
     units = "F";

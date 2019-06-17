@@ -91,6 +91,8 @@ void draw() {
   oven.temp=temp; // Send temperature to oven.
   oven.timerTime = timerTime; // Send timer to oven.
   
+ } else {
+    oven.background(oven.ovenBG); 
  }
 
 }

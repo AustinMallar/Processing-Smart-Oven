@@ -3,6 +3,7 @@ import g4p_controls.*;
 OvenScreen oven;
 PImage phone;
 PImage lockIcon;
+PresetButton preset1, preset2;
 
 boolean ovenPowerStatus = false;
 boolean locked = false;
@@ -23,13 +24,15 @@ public void settings() {
 }
 
 void setup() {
+ preset1 = new PresetButton("1", 637,304);
+ preset2 = new PresetButton("2", 637,354);
  String files[];
  oven = new OvenScreen();
  lockIcon = loadImage("lockButton.png");
  phone = loadImage("phone.png");
  oven.ovenBG = loadImage("oven.jpg");
  oven.background(oven.ovenBG);
- 
+
  powerButton = new GButton(this, 620, 180, 50, 50, "OFF");
  
  timerKnob = new GKnob(this, 155, 310, 50, 50, 01f);
@@ -53,8 +56,10 @@ void setup() {
 }
 
 void draw() {
+
  temp = tempKnob.getValueI();
  background(phone);
+
  fill(0);
  noStroke();
  if (ovenPowerStatus) {
@@ -79,6 +84,7 @@ void draw() {
 
 
  if (ovenPowerStatus) {
+   //Oven is on
   fill(0);
   textSize(30);
   textAlign(CENTER);
@@ -96,9 +102,14 @@ void draw() {
   
   oven.temp=temp; // Send temperature to oven.
   oven.timerTime = timerTime; // Send timer to oven.
-  
+ } else {
+   //Oven is off
+   oven.background(oven.ovenBG);
  }
-
+ 
+ preset1.display();
+ preset2.display();
+ 
 }
 
 public void lockOven() {
@@ -168,5 +179,47 @@ void mousePressed() {
    lockOven();
   }
  }
+ 
+  // Preset1 click handle
+  if (mouseX>=618 && mouseX <=651) {
+   if (mouseY>=286 && mouseY <=320) {
+       //Handle preset: if left clicked, activates the preset. If right clicked, sets the preset to the current temperature and time.
+        if (mouseButton == LEFT) {
+          if(preset1.active) {
+            preset1.active = false;
+            preset2.active = false;
+          } else {
+            preset1.active = true;
+            preset2.active = false;
+          }
+          
+        } else if (mouseButton == RIGHT) {
+          
+        } else {
+        
+        }
+   }
+  }
+  
+  // Preset2 click handle
+  if (mouseX>=618 && mouseX <=651) {
+   if (mouseY>=337 && mouseY <=370) {
+       //Handle preset: if left clicked, activates the preset. If right clicked, sets the preset to the current temperature and time.
+        if (mouseButton == LEFT) {
+          if(preset2.active) {
+            preset2.active = false;
+            preset1.active = false;
+          } else {
+            preset2.active = true;
+            preset1.active = false;
+          }
+          
+        } else if (mouseButton == RIGHT) {
+          
+        } else {
+        
+        }
+   }
+  }
 
 }

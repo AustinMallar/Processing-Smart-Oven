@@ -71,6 +71,12 @@ void draw() {
 
  rect(175, 250, 120, 50);
  rect(315, 250, 120, 50);
+ textMode(CENTER);
+ textSize(30);
+ fill(255);
+ text("TIME",136,210);
+ text("TEMP",273,210);
+
 
  if (ovenPowerStatus) {
   fill(0);
